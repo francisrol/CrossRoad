@@ -184,8 +184,8 @@ LOGIN_URL = '/blog/login/'
 EMAIL_HOST = 'smtp.sina.com'
 EMAIL_PORT = 465#587
 EMAIL_USE_SSL = True #use SSL protocol
-EMAIL_HOST_USER = 'ryomawithlst@sina.com'#os.environ.get('MAIL_USERNAME')
-EMAIL_HOST_PASSWORD = 'stomer0.9'#os.environ.get('MAIL_PASSWORD')
+EMAIL_HOST_USER = #os.environ.get('MAIL_USERNAME')
+EMAIL_HOST_PASSWORD = #os.environ.get('MAIL_PASSWORD')
 DEFAULT_FROM_EMAIL = 'ryomawithlst@sina.com'
 EMAIL_SUBJECT_PREFIX = '[CrossRoad]'
 
