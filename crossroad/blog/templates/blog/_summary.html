@@ -1,0 +1,17 @@
+            {% load custom_markdown %}
+            {% for blog in object_list %}
+            <div class="blog-post">
+              <h2 class="blog-post-title"><a href="{% url 'blog:blog_detail' alias=blog.blogtype.first.alias pk=blog.id %}">{{blog.title}}</a></h2>
+              <p class="blog-post-meta">{{blog.pub_date}} | 标签：
+                <cite class='tag'>
+                  {% for btype in blog.blogtype.all %}
+                    <span class="badge">{{btype.btype}}</span>
+                  {% endfor %}                  
+                </cite>
+              </p>
+              <hr/>
+              <p>{{blog.summary|custom_markdown}}</p>
+              <p><a class='btn btn-primary btn-xs' style='float:right;' href="{% url 'blog:blog_detail' alias=blog.blogtype.first.alias pk=blog.id %}">继续阅读</a></p>
+
+            </div><!-- /.blog-post -->
+            {% endfor %}
