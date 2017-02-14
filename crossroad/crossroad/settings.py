@@ -19,7 +19,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/1.10/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 
+SECRET_KEY = "blog-belong-to-luosongtao"
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -75,28 +75,30 @@ WSGI_APPLICATION = 'crossroad.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/1.10/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'crossroad',
-        'USER':'crossroad',
-        'PASSWORD':'www-crossroad',
-        'HOST':'127.0.0.1',
-        'PORT':'5432',
-    }
-}
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql',
+#         'NAME': 'crossroad',
+#         'USER':'crossroad',
+#         'PASSWORD':'www-crossroad',
+#         'HOST':'127.0.0.1',
+#         'PORT':'5432',
+#     }
+# }
 
-'''
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': MYSQL_DB,
-        'USER': MYSQL_USER,
-        'PASSWORD': MYSQL_PASS,
-        'HOST': MYSQL_HOST,
-        'PORT': MYSQL_PORT,
-        'OPTIONS': {'init_command': "SET storage_engine=MYISAM;"},
+        'NAME': 'crossroad',
+        'USER': 'crossroad',
+        'PASSWORD': 'www-crossroad',
+        'HOST': 'localhost',
+        'PORT': '3306',
+        #'OPTIONS': {'init_command': "SET storage_engine=MYISAM;"},
     },
+}
+'''
     'slave': {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': MYSQL_DB,
@@ -181,11 +183,11 @@ LOGIN_URL = '/blog/login/'
 
 
 #Email configes\
-EMAIL_HOST = 'smtp.sina.com'
-EMAIL_PORT = 465#587
-EMAIL_USE_SSL = True #use SSL protocol
-EMAIL_HOST_USER = #os.environ.get('MAIL_USERNAME')
-EMAIL_HOST_PASSWORD = #os.environ.get('MAIL_PASSWORD')
-DEFAULT_FROM_EMAIL = 'ryomawithlst@sina.com'
-EMAIL_SUBJECT_PREFIX = '[CrossRoad]'
+# EMAIL_HOST = 'smtp.sina.com'
+# EMAIL_PORT = 465#587
+# EMAIL_USE_SSL = True #use SSL protocol
+# EMAIL_HOST_USER = #os.environ.get('MAIL_USERNAME')
+# EMAIL_HOST_PASSWORD = #os.environ.get('MAIL_PASSWORD')
+# DEFAULT_FROM_EMAIL = 'ryomawithlst@sina.com'
+# EMAIL_SUBJECT_PREFIX = '[CrossRoad]'
 

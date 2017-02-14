@@ -1,22 +1,10 @@
-import json
-
-
-from django.contrib.auth.forms import (
-    AuthenticationForm, PasswordChangeForm, PasswordResetForm, SetPasswordForm,
-)
-from django.shortcuts import render,get_object_or_404,redirect
 from django.views import generic
-from django.http import HttpResponseRedirect,HttpResponse,HttpResponseNotFound
-from django.contrib.auth.models import User
-from django.contrib.auth import authenticate,login,logout,views
-from django.contrib.auth.decorators import login_required
+from django.http import HttpResponseRedirect
 from django.urls import reverse
-from django.contrib import messages
 
-from .models import Blog,BlogType
-from .forms import RegisterForm,LoginForm,PwChangeForm
+from .models import Blog
 from .filters import search,blog_filter
-# Create your views here.
+
 
 class IndexView(generic.ListView):
 	model = Blog  						#显示内容的模板类
@@ -56,190 +44,190 @@ class IndexView(generic.ListView):
 		return context
 
 
-#为表单html元素添加自定义属性
-def add_attrs(form):
-	for field in form:
-		#为<input>添加class
-		field.field.widget.attrs.update({'class':'form-control'})
-		#为<label>添加class
-		field.label=field.label_tag(attrs={'class':'col-sm-2 control-label'})
-	return form
+# #为表单html元素添加自定义属性
+# def add_attrs(form):
+# 	for field in form:
+# 		#为<input>添加class
+# 		field.field.widget.attrs.update({'class':'form-control'})
+# 		#为<label>添加class
+# 		field.label=field.label_tag(attrs={'class':'col-sm-2 control-label'})
+# 	return form
+#
+# def form_data_factory(request,formclass):
+# 	return formclass(request.POST)
+#
+# #用户注册
+# def register_view(request):
+#
+# 	if request.method == 'POST':
+# 		'''
+# 		#当使用ajax提交表单时的部分代码，是我一开始尝试的方法，丧失了django自带User类的很多功能，所以弃用
+# 		data = json.loads(request.body.decode('utf-8'))
+# 		username = data.get('username','')
+# 		password = data.get('password','')
+# 		email = data.get('email','')
+#
+# 		try:
+# 			un = User.objects.get(username=username)
+# 			if un:
+# 				return HttpResponse...
+# 		except:
+# 			return render(request,'blog/index.html',{'username':username,'email':email})
+# 		'''
+# 		#获取表单数据
+# 		#data = request.POST
+# 		#将数据bound到Form类实例，以便进行检验操作
+# 		post_form = form_data_factory(request,RegisterForm)	#RegisterForm(data)
+# 		#检验表单数据是否符合要求
+# 		if post_form.is_valid():
+# 			#通过检验，创建用户
+# 			user = User.objects.create_user(username=request.POST['username'],\
+# 											password=request.POST['password'],\
+# 											email=request.POST['email'])
+# 			user.save()
+# 			return redirect("blog:index")
+# 		else:
+# 			#未通过检验，打回重写
+# 			return render(request,'blog/auth.html',{'form':add_attrs(post_form),'pagetitle':'用户注册',\
+# 				'submit':'注册'})
+# 	context = {'form':add_attrs(RegisterForm()),\
+# 				'pagetitle':'用户注册',\
+# 				'submit':'注册'}
+# 	return render(request,'blog/auth.html',context)
+# #用户登录
+# '''
+# def login_view(request):
+# 	if request.user.is_authenticated:
+# 		return HttpResponseRedirect(reverse("blog:index"))
+# 	if request.method == 'POST':
+# 		form = form_data_factory(request,LoginForm)
+# 		if form.is_valid():
+# 			user = authenticate(username=request.POST['username'],password=request.POST['password'])
+# 			login(request,user)
+# 			return redirect("blog:index")
+# 		else:
+# 			return render(request,'blog/auth.html',{'form':add_attrs(form),'pagetitle':'用户登录',\
+# 				'submit':'登录'})
+# 	context = {'form':add_attrs(LoginForm()),\
+# 				'pagetitle':'用户登录',\
+# 				'submit':'登录'}
+# 	return render(request,'blog/auth.html',context)
+# '''
+#
+# #使用django原生方法进行操作，注释里为为使用原生方法进行的相同操作，下同
+# def login_view(request):
+# 	template_response = views.login(request,\
+# 			template_name='blog/registration/login.html'
+# 			)
+# 	return template_response
+#
+# '''
+# def logout_view(request,uid):
+# 	user = get_object_or_404(User,pk=uid)
+# 	if request.user.is_authenticated:
+# 		logout(request)
+# 	return redirect("blog:index")
+# '''
+# def logout_view(request):
+# 	template_response = views.logout(request,\
+# 			template_name='blog/registration/logged_out.html'
+# 			)
+# 	return template_response
+#
+# '''
+# @login_required
+# def password_change(request,uid):
+# 	u = get_object_or_404(User,pk=uid)
+# 	#确认是否为当前登录的用户
+# 	if request.user != u:
+# 		return HttpResponseNotFound
+# 	else:
+# 		if request.method == 'POST':
+# 			form = form_data_factory(request,PwChangeForm)
+# 			if form.is_valid():
+# 				user = request.user
+# 				user.set_password(request.POST['new_password'])
+# 				user.save()
+# 				logout(request)
+# 				return redirect("blog:login")
+# 			else:
+# 				return render(request,'blog/auth.html',{'form':add_attrs(form)})
+# 		context = {'form':add_attrs(PwChangeForm({'username':request.user.username})),\
+# 					'pagetitle':'修改密码',\
+# 					'submit':'提交'}
+# 		return render(request,'blog/auth.html',context)
+# '''
+# #使用django原生方法进行操作
+# def password_change(request):
+# 	template_response = views.password_change(request,\
+# 			template_name='blog/registration/password_change_form.html',\
+# 			post_change_redirect=reverse('blog:index'),\
+# 			#password_change_form=add_attrs(PwChangeForm)
+# 			)
+# 	return template_response
+# #使用django原生方法进行操作
+# def password_reset(request):
+# 	template_response = views.password_reset(request,\
+# 			template_name='blog/registration/password_reset_form.html',\
+# 			email_template_name='blog/registration/password_reset_email.html',\
+# 			subject_template_name='blog/registration/password_reset_subject.txt',
+# 			post_reset_redirect=reverse('blog:index'))
+# 	return template_response
+# #使用django原生方法进行操作
+# def password_reset_done(reauest):
+# 	template_response = views.password_reset(request,\
+# 			template_name='blog/registration/password_reset_done.html')
+# 	return template_response
+# #使用django原生方法进行操作
+# def password_reset_confirm(request,**kwargs):
+# 	uidb64 = kwargs.get('uidb64')
+# 	token = kwargs.get('token')
+# 	template_response = views.password_reset_confirm(request,uidb64=uidb64,token=token,\
+# 			template_name='blog/registration/password_reset_confirm.html',\
+# 			set_password_form=SetPasswordForm,\
+# 			post_reset_redirect=reverse('blog:index'))
+# 	return template_response
+# #使用django原生方法进行操作
+# def password_reset_complete(request):
+# 	template_response = views.password_reset_complete(request,\
+# 			template_name='blog/registration/password_reset_complete.html')
+# 	return template_response
 
-def form_data_factory(request,formclass):
-	return formclass(request.POST)
-
-#用户注册
-def register_view(request):
-	
-	if request.method == 'POST':
-		'''
-		#当使用ajax提交表单时的部分代码，是我一开始尝试的方法，丧失了django自带User类的很多功能，所以弃用
-		data = json.loads(request.body.decode('utf-8'))
-		username = data.get('username','')
-		password = data.get('password','')
-		email = data.get('email','')
-
-		try:
-			un = User.objects.get(username=username)
-			if un:
-				return HttpResponse...
-		except:
-			return render(request,'blog/index.html',{'username':username,'email':email})
-		'''
-		#获取表单数据
-		#data = request.POST
-		#将数据bound到Form类实例，以便进行检验操作
-		post_form = form_data_factory(request,RegisterForm)	#RegisterForm(data)
-		#检验表单数据是否符合要求
-		if post_form.is_valid():
-			#通过检验，创建用户
-			user = User.objects.create_user(username=request.POST['username'],\
-											password=request.POST['password'],\
-											email=request.POST['email'])
-			user.save()
-			return redirect("blog:index")
-		else:
-			#未通过检验，打回重写
-			return render(request,'blog/auth.html',{'form':add_attrs(post_form),'pagetitle':'用户注册',\
-				'submit':'注册'})
-	context = {'form':add_attrs(RegisterForm()),\
-				'pagetitle':'用户注册',\
-				'submit':'注册'}
-	return render(request,'blog/auth.html',context)
-#用户登录
-'''
-def login_view(request):
-	if request.user.is_authenticated:
-		return HttpResponseRedirect(reverse("blog:index"))
-	if request.method == 'POST':
-		form = form_data_factory(request,LoginForm)
-		if form.is_valid():
-			user = authenticate(username=request.POST['username'],password=request.POST['password'])
-			login(request,user)
-			return redirect("blog:index")
-		else:
-			return render(request,'blog/auth.html',{'form':add_attrs(form),'pagetitle':'用户登录',\
-				'submit':'登录'})
-	context = {'form':add_attrs(LoginForm()),\
-				'pagetitle':'用户登录',\
-				'submit':'登录'}
-	return render(request,'blog/auth.html',context)
-'''
-
-#使用django原生方法进行操作，注释里为为使用原生方法进行的相同操作，下同
-def login_view(request):
-	template_response = views.login(request,\
-			template_name='blog/registration/login.html'
-			)
-	return template_response
-
-'''
-def logout_view(request,uid):
-	user = get_object_or_404(User,pk=uid)
-	if request.user.is_authenticated:
-		logout(request)
-	return redirect("blog:index")
-'''
-def logout_view(request):
-	template_response = views.logout(request,\
-			template_name='blog/registration/logged_out.html'
-			)
-	return template_response
-
-'''
-@login_required
-def password_change(request,uid):
-	u = get_object_or_404(User,pk=uid)
-	#确认是否为当前登录的用户
-	if request.user != u:
-		return HttpResponseNotFound
-	else:
-		if request.method == 'POST':
-			form = form_data_factory(request,PwChangeForm)
-			if form.is_valid():
-				user = request.user
-				user.set_password(request.POST['new_password'])
-				user.save()
-				logout(request)
-				return redirect("blog:login")
-			else:
-				return render(request,'blog/auth.html',{'form':add_attrs(form)})
-		context = {'form':add_attrs(PwChangeForm({'username':request.user.username})),\
-					'pagetitle':'修改密码',\
-					'submit':'提交'}
-		return render(request,'blog/auth.html',context)
-'''
-#使用django原生方法进行操作
-def password_change(request):
-	template_response = views.password_change(request,\
-			template_name='blog/registration/password_change_form.html',\
-			post_change_redirect=reverse('blog:index'),\
-			#password_change_form=add_attrs(PwChangeForm)
-			)
-	return template_response
-#使用django原生方法进行操作
-def password_reset(request):
-	template_response = views.password_reset(request,\
-			template_name='blog/registration/password_reset_form.html',\
-			email_template_name='blog/registration/password_reset_email.html',\
-			subject_template_name='blog/registration/password_reset_subject.txt',
-			post_reset_redirect=reverse('blog:index'))
-	return template_response
-#使用django原生方法进行操作
-def password_reset_done(reauest):
-	template_response = views.password_reset(request,\
-			template_name='blog/registration/password_reset_done.html')
-	return template_response
-#使用django原生方法进行操作
-def password_reset_confirm(request,**kwargs):
-	uidb64 = kwargs.get('uidb64')
-	token = kwargs.get('token')
-	template_response = views.password_reset_confirm(request,uidb64=uidb64,token=token,\
-			template_name='blog/registration/password_reset_confirm.html',\
-			set_password_form=SetPasswordForm,\
-			post_reset_redirect=reverse('blog:index'))
-	return template_response
-#使用django原生方法进行操作
-def password_reset_complete(request):
-	template_response = views.password_reset_complete(request,\
-			template_name='blog/registration/password_reset_complete.html')
-	return template_response
-
-class ProfileView(generic.DetailView):
-	model = User
-	template_name = 'blog/profile.html'
-
-#使用django的UpdateView构建个人资料视图函数
-class ProfileEditView(generic.edit.UpdateView):
-	model = User
-	fields = ['email','first_name','last_name']		#可修改的项
-	template_name = 'blog/auth.html'
-	success_url = '/'			#成功后重定向的页面
-
-	def get_form(self):
-		form = super(ProfileEditView,self).get_form()
-		#为form添加class属性
-		return add_attrs(form)
-
-	def get_context_data(self,**kwargs):
-		context = super(ProfileEditView,self).get_context_data(**kwargs)
-		context['pagetitle'] = '编辑资料'
-		context['submit'] = '保存'
-		return context
-	#确保非本用户修改资料
-	@login_required
-	def get(self,request,pk):
-		if self.get_object() != request.user:
-			messages.add_message(request, messages.INFO, '请勿试图修改他人资料。')
-			return HttpResponseRedirect(reverse('blog:index'))
-		return super().get(request,pk)
-	#万一非本用户提交了表单，所以再上个保险
-	@login_required
-	def post(self,request,pk):
-		if self.get_object() != request.user:
-			messages.add_message(request, messages.INFO, '请勿试图修改他人资料。')
-			return HttpResponseRedirect(reverse('blog:index'))
-		return super().post(request,pk)
+# class ProfileView(generic.DetailView):
+# 	model = User
+# 	template_name = 'blog/profile.html'
+#
+# #使用django的UpdateView构建个人资料视图函数
+# class ProfileEditView(generic.edit.UpdateView):
+# 	model = User
+# 	fields = ['email','first_name','last_name']		#可修改的项
+# 	template_name = 'blog/auth.html'
+# 	success_url = '/'			#成功后重定向的页面
+#
+# 	def get_form(self):
+# 		form = super(ProfileEditView,self).get_form()
+# 		#为form添加class属性
+# 		return add_attrs(form)
+#
+# 	def get_context_data(self,**kwargs):
+# 		context = super(ProfileEditView,self).get_context_data(**kwargs)
+# 		context['pagetitle'] = '编辑资料'
+# 		context['submit'] = '保存'
+# 		return context
+# 	#确保非本用户修改资料
+# 	@login_required
+# 	def get(self,request,pk):
+# 		if self.get_object() != request.user:
+# 			messages.add_message(request, messages.INFO, '请勿试图修改他人资料。')
+# 			return HttpResponseRedirect(reverse('blog:index'))
+# 		return super().get(request,pk)
+# 	#万一非本用户提交了表单，所以再上个保险
+# 	@login_required
+# 	def post(self,request,pk):
+# 		if self.get_object() != request.user:
+# 			messages.add_message(request, messages.INFO, '请勿试图修改他人资料。')
+# 			return HttpResponseRedirect(reverse('blog:index'))
+# 		return super().post(request,pk)
 
 #博客分类视图
 class BlogDetailView(generic.DetailView):

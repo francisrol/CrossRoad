@@ -92,3 +92,7 @@ ENV/
 .jpg
 .jpeg
 .gif
+
+# migrations
+migrations/
+dist/

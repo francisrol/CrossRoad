@@ -1,5 +1,5 @@
-{% load i18n static %}
 <!DOCTYPE html>
+{% load i18n static %}
 {% get_current_language as LANGUAGE_CODE %}
 {% get_current_language_bidi as LANGUAGE_BIDI %}
 <html lang="{{ LANGUAGE_CODE|default:'zh-cn' }}" {% if LANGUAGE_BIDI %}dir="rtl"{% endif %}>
@@ -26,7 +26,6 @@
     {% if LANGUAGE_BIDI %}<link rel="stylesheet" type="text/css" href="{% block stylesheet_rtl %}{% static "admin/css/rtl.css" %}{% endblock %}" />{% endif %}
 
     <!-- Just for debugging purposes. Don't actually copy these 2 lines! -->
-    <!--[if lt IE 9]><script src="../../assets/js/ie8-responsive-file-warning.js"></script><![endif]-->
     <script src="//cdn.bootcss.com/jquery/1.12.4/jquery.min.js"></script>
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
     <!--[if lt IE 9]>
@@ -68,14 +67,14 @@
           <li class="dropdown">
             <a href="#" class="dropdown-toggle" id="dropdownMenu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="glyphicon glyphicon-user"></i>{{request.user.username}} <span class="caret"></span></a>
             <ul class="dropdown-menu" aria-labelledby="dropdownMenu">
-              <li><a href="{% url 'blog:profile' request.user.id %}"><i class="glyphicon glyphicon-cog"></i>  个人资料</a></li>
-              <li><a href="{% url 'blog:pw_change' %}"><i class="glyphicon glyphicon-edit"></i>  更改密码</a></li>
-               <li role="separator" class="divider"></li>
-              <li><a href="{% url 'blog:logout' %}"><i class="glyphicon glyphicon-off"></i>  退出登录</a></li>
+              <!--<li><a href=""><i class="glyphicon glyphicon-cog"></i>  个人资料</a></li>-->
+              <!--<li><a href=""><i class="glyphicon glyphicon-edit"></i>  更改密码</a></li>-->
+               <!--<li role="separator" class="divider"></li>-->
+              <!--<li><a href=""><i class="glyphicon glyphicon-off"></i>  退出登录</a></li>-->
             </ul>
           </li>
           {% else %}
-          <li><a class="blog-nav-item" href="{% url 'blog:login' %}"><i class="glyphicon glyphicon-log-in"></i>  登录</a></li>
+          <!--<li><a class="blog-nav-item" href=""><i class="glyphicon glyphicon-log-in"></i>  登录</a></li>-->
           {% endif %}
         </ul>
       </div>
