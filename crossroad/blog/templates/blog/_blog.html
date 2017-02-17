@@ -2,11 +2,15 @@
             {% if object %}
             <div class="blog-post">
               <h3 class="blog-post-title">{{object.title}}</h3>
-              <p class="blog-post-meta">{{object.pub_date}} | 标签：
-                <cite class='tag'>
-                  {% for btype in object.blogtype.all %}
-                    <span class="badge">{{btype.btype}}</span>
-                  {% endfor %}                  
+              <p class="blog-post-meta">{{object.pub_date}}
+                  <em class="tag">   |   分类：
+                      <a href="{% url 'blog:category' category=blog.blogcategory.alias %}">{{object.blogcategory.bcategory}}</a>
+                  </em>
+                <cite class='tag fr'>
+                    标签：
+                  {% for tag in object.blogtag.all %}
+                    <span class="badge"><a href="{% url 'blog:tags' tags=tag.alias  %}">{{tag.btag}}</a></span>
+                  {% endfor %}
                 </cite>
               </p>
               <hr>

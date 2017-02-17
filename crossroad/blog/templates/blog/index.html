@@ -1,45 +1,36 @@
 {% extends 'blog/base.html' %}
+{% load static %}
 {% block title %} Home--Francis Web {% endblock %}
 
       {% block content %}
 
-      {% block pagetitle %}
-        <div class="blog-header">
-          <h1 class="blog-title">CrossRoad</h1>
-          <p class="lead blog-description">----Francis的个人小站</p>
-        </div>
-      {% endblock %}
+      <!--{% block pagetitle %}-->
+        <!--<div class="blog-header">-->
+          <!--<h1 class="blog-title">CrossRoad</h1>-->
+          <!--<p class="lead blog-description">&#45;&#45;&#45;&#45;Francis的个人小站</p>-->
+        <!--</div>-->
+      <!--{% endblock %}-->
 
       <div class="row">
         <!-- Blog-main -->
         <div class="col-sm-9 blog-main">
-          <form class='search' method='GET'>
-            <div class="input-group">
-              <input type="text" class="form-control" name='q' placeholder="Search for..." autofocus {% if form_string %}value='{{form_string}}'{% endif %}>
-              <span class="input-group-btn">
-                <button class="search-btn btn btn-default" type="submit">搜索</button>
-              </span>
-            </div><!-- /input-group -->             
-          </form>
-          {% if form_string %}
-          <p class='loading'><img src="../static/blog/image/loading.gif" alt=""> 正在搜索</p>
-          <p class="search-bar">共搜索到<span class="badge">{{results_num}}</span>条结果，返回<a href="{% url 'blog:index' %}"> 查看全部</a>。</p>
-          {% endif %}
+
+
           <hr>
           <div class='blog-include'>
            {% include 'blog/_summary.html' %}
           <nav>
             <ul class="pagination">
               <li {% if not page_obj.has_previous %}class='disabled'>
-                <a {% else%}><a href="/?{% if form_string %}q={{form_string}}&{% endif %}page={{page_obj.number|add:-1}}" {% endif %} aria-label="Previous">
+                <a {% else%}><a href="{{abs_url}}?{% if form_string %}q={{form_string}}&{% endif %}{% if btags_uri %}tag={{btags_uri}}&{% endif %}page={{page_obj.number|add:-1}}" {% endif %} aria-label="Previous">
                 <span aria-hidden="true">&laquo;</span>
                 </a>
                 </li>
                   {% for pn in paginator.page_range %}
-                  <li {% if pn == page_obj.number %}class='active'><a {% else %}><a href="/?{% if form_string %}q={{form_string}}&{% endif %}page={{pn}}"{% endif %}>{{pn}}</a></li>
+                  <li {% if pn == page_obj.number %}class='active'><a {% else %}><a href="{{abs_url}}?{% if form_string %}q={{form_string}}&{% endif %}{% if btags_uri %}tag={{btags_uri}}&{% endif %}page={{pn}}"{% endif %}>{{pn}}</a></li>
                   {% endfor %}
                 <li {% if not page_obj.has_next %}class='disabled'>
-                <a {% else%}><a href="/?{% if form_string %}q={{form_string}}&{% endif %}page={{page_obj.number|add:1}}" {% endif %} aria-label="Next">
+                <a {% else%}><a href="{{abs_url}}?{% if form_string %}q={{form_string}}&{% endif %}{% if btags_uri %}tag={{btags_uri}}&{% endif %}page={{page_obj.number|add:1}}" {% endif %} aria-label="Next">
                   <span aria-hidden="true">&raquo;</span>
                 </a>
               </li>
@@ -52,21 +43,24 @@
         {% block sidebar %}
        
         <div class="col-sm-3 blog-sidebar">
-          <div class="sidebar-module sidebar-module-inset">
-          <h4>个人站言</h4>
-            <p>Now, I have come to the <strong>crossroad</strong> in my life.</p>
-            <p>I always knew what the right path was. Without exception, I knew, but I never took it.</p>
-            <p>You know why? </p>
-            <P>... It was too dame hard.</p>
-             <small>----《闻香识女人》阿尔帕西诺</small>
-          </div>
- 
+          <form class='search' method='GET'>
+            <div class="input-group">
+              <input type="text" class="form-control" name='q' placeholder="Search for..." autofocus {% if form_string %}value='{{form_string}}'{% endif %}>
+              <span class="input-group-btn">
+                <button class="search-btn btn btn-default" type="submit">搜索</button>
+              </span>
+            </div><!-- /input-group -->
+          </form>
+          {% if form_string %}
+          <p class='loading'><img src="{% static 'blog/image/loading.gif' %}" alt=""> 正在搜索</p>
+          <p class="search-bar">共搜索到<span class="badge">{{results_num}}</span>条结果，返回<a href="{% url 'blog:index' %}"> 查看全部</a>。</p>
+          {% endif %}
           <div class="sidebar-module">
-            <h4>筛选<em>|</em>分类</h4>
+            <h4>标签目录</h4>
             <ol class="list-unstyled">
-              {% for z,x,y in btype_num_list %}
-                {% if y %}
-                <li><a href="/?{% if form_string %}q={{form_string}}&{% endif %}btype={{btype_uri|safe}}{% if not x in btype_uri %}+{{x}}{% endif %}" class='btn btn-primary btn-xs'>{{z}}<span class="badge">{{y}}</span></a>
+              {% for tag_alias,tag_name,nums in btags_num_list %}
+                {% if tag_name %}
+                <li><a href="{{abs_url}}?{% if form_string %}q={{form_string}}&{% endif %}tag={% if tag_name not in btags_uri %}{{btags_uri}},{{tag_name}}{% else %}{{btags_uri}}{% endif %}" class='btn btn-primary btn-xs'>{{tag_alias}}<span class="badge">{{nums}}</span></a>
                 {% endif %}
                 </li>
               {% endfor %}

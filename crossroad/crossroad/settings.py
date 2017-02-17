@@ -24,7 +24,7 @@ SECRET_KEY = "blog-belong-to-luosongtao"
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['127.0.0.1','www.francisrol.info']
+ALLOWED_HOSTS = []
 
 
 # Application definition

@@ -1,4 +1,5 @@
 {% extends 'blog/base.html' %}
+{% load static %}
 {% block content %}
       <div class="row">
               <!-- Sidebar -->
@@ -21,25 +22,25 @@
               <span class="input-group-btn">
                 <button class="search-btn btn btn-default" type="submit">搜索</button>
               </span>
-            </div><!-- /input-group -->             
+            </div><!-- /input-group -->
           </form>
-         
+
          {% if form_string %}
-          <p class='loading'><img src="../static/blog/image/loading.gif" alt=""> 正在搜索</p>
+          <p class='loading'><img src="{% static 'blog/image/loading.gif' %}" alt=""> 正在搜索</p>
           <p class="search-bar">共搜索到<span class="badge">{{results_num}}</span>条结果，返回<a href="{% url 'blog:index' %}"> 查看全部</a>。</p>
           {% endif %}
           </div>
             <div class="sidebar-module sidebar">
-            <h4>更过相关文章</h4>
+            <h4>相关文章</h4>
             <ul class="nav nav-sidebar">
               {% for blog in object_list %}
-                <li><a href="{% url 'blog:blog_detail' alias=blog.blogtype.first.alias pk=blog.id %}">{{blog.title}}</a>
+                <li><a href="{% url 'blog:blog_detail' alias=blog.blogcategory.alias slug=blog.slug %}">{{blog.title}}</a>
                 </li>
               {% endfor %}
             </ul>
           </div>
           </div>
- 
+
 <!-- End sidebar -->
         {% endblock %}
 

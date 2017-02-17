@@ -1,17 +1,21 @@
             {% load custom_markdown %}
             {% for blog in object_list %}
             <div class="blog-post">
-              <h2 class="blog-post-title"><a href="{% url 'blog:blog_detail' alias=blog.blogtype.first.alias pk=blog.id %}">{{blog.title}}</a></h2>
-              <p class="blog-post-meta">{{blog.pub_date}} | 标签：
-                <cite class='tag'>
-                  {% for btype in blog.blogtype.all %}
-                    <span class="badge">{{btype.btype}}</span>
+              <h2 class="blog-post-title"><a href="{% url 'blog:blog_detail' alias=blog.blogcategory.alias slug=blog.slug %}">{{blog.title}}</a></h2>
+                <p>{{blog.summary|custom_markdown}}
+                <a class='btn btn-primary btn-xs clearfix' href="{% url 'blog:blog_detail' alias=blog.blogcategory.alias slug=blog.slug %}">查看更多>></a>
+                </p>
+              <p class="blog-post-meta">{{blog.pub_date}}
+                  <em class="tag">   |   分类：
+                      <a href="{% url 'blog:category' category=blog.blogcategory.alias %}">{{blog.blogcategory.bcategory}}</a>
+                  </em>
+                <cite class='tag fr'>
+                    标签：
+                  {% for tag in blog.blogtag.all %}
+                    <span class="badge"><a href="{% url 'blog:tags' tags=tag.alias %}">{{tag.btag}}</a></span>
                   {% endfor %}                  
                 </cite>
               </p>
-              <hr/>
-              <p>{{blog.summary|custom_markdown}}</p>
-              <p><a class='btn btn-primary btn-xs' style='float:right;' href="{% url 'blog:blog_detail' alias=blog.blogtype.first.alias pk=blog.id %}">继续阅读</a></p>
-
             </div><!-- /.blog-post -->
+            <hr>
             {% endfor %}

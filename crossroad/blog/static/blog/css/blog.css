@@ -3,23 +3,10 @@
  */
 
 body {
-  font-family: "Helvetica Neue", "Times New Roman", Times, serif;
+  font-family: "ubuntu", "Helvetica Neue", "Times New Roman", Times, serif;
   color: #555;
-  font-size: 13px;
+  font-size: 14px;
 }
-
-h1, .h1,
-h2, .h2,
-h3, .h3,
-h4, .h4,
-h5, .h5,
-h6, .h6 {
-  margin-top: 0;
-  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-  font-weight: normal;
-  color: #333;
-}
-
 
 /*
  * Override Bootstrap's default container.
@@ -31,6 +18,9 @@ h6, .h6 {
   }
 }
 
+.container .blog-nav{
+  padding: 0 !important;
+}
 
 /*
  * Masthead for nav
@@ -137,12 +127,21 @@ h6, .h6 {
  */
 
 .blog-post {
-  margin-bottom: 60px;
+  margin: 30px 0;
 }
 .blog-post-title {
   margin-bottom: 5px;
   font-size: 30px;
 }
+
+.blog-post-title a{
+  color: #555;
+}
+
+.blog-post-title a:hover{
+  color: #000;
+}
+
 .blog-post-meta {
   margin-bottom: 15px;
   color: #999;
@@ -215,4 +214,15 @@ h6, .h6 {
 
 .list-unstyled li{
   margin-bottom: 2px;
+}
+
+pre {
+  background-color: #f7f7f7 !important;
+}
+
+.badge a{
+  color: #fff !important;
+}
+.tag .badge:hover{
+  background-color: #222;
 }
